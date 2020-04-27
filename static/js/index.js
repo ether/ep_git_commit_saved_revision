@@ -1,57 +1,51 @@
 exports.handleClientMessage_CUSTOM = function(hook, context, cb){
-  if(context.payload.action == "recieveTitleMessage"){
+  if(context.payload.action == "recievegitcommitMessage"){
     var message = context.payload.message;
-    if(!$("#input_title").is(":visible")){ // if we're not editing..
-      if(message){
-        window.document.title = message;
-        $('#title > h1').text(message);
-        $('#input_title').val(message);
-      }
+    if(message === true){
+      $.gritter.add({
+        title: "Saved Revision Status",
+        text: "Saved",
+        sticky: false
+      })
+    }else{
+      $.gritter.add({
+        title: "Saved Revision Status",
+        text: "Failed!!!"
+      })
     }
   }
 }
 
 exports.documentReady = function(){
+  $('body').on('click', '.buttonicon-savedRevision', function(){
+    $('#gitcommitModal').addClass('popup-show');
+    $('#input_gitcommit').focus();
+  }); // fine for click but can't say Cntrl S to save revision?
+
   if (!$('#editorcontainerbox').hasClass('flex-layout')) {
       $.gritter.add({
           title: "Error",
-          text: "Ep_set_title_on_pad: Please upgrade to etherpad 1.9 for this plugin to work correctly",
+          text: "ep_git_commit_saved_revision: Please upgrade to etherpad 1.8 for this plugin to work correctly",
           sticky: true,
           class_name: "error"
       })
   }
-  $('#edit_title').click(function(){
-    $('#input_title, #save_title').show();
-    $('#title, #edit_title').hide();
-    $('#input_title').focus();
+
+  $('#dogitcommit').click(function(){
+    $('#gitcommitModal').removeClass('popup-show');
+    sendgitcommit();
   });
 
-  $('#save_title').click(function(){
-    sendTitle();
-    window.document.title = $('#input_title').val();
-    $('#title > h1').text($('#input_title').val());
-    $('#title, #edit_title').show();
-    $('#input_title, #save_title').hide();
-  });
-
-  $('#input_title').keyup(function(e){
-    sendTitle();
-    window.document.title = $('#input_title').val();
-    $('#title > h1').text($('#input_title').val());
-    if(e.keyCode === 13){
-      $('#save_title').click();
-    }
-  });
 }
 
-function sendTitle(){
+function sendgitcommit(){
   var myAuthorId = pad.getUserId();
   var padId = pad.getPadId();
-  var message = $('#input_title').val();
+  var message = $('#gitcommitSrc').val();
   // Send chat message to send to the server
   var message = {
-    type : 'title',
-    action : 'sendTitleMessage',
+    type : 'gitcommit',
+    action : 'sendgitcommitMessage',
     message : message,
     padId : padId,
     myAuthorId : myAuthorId

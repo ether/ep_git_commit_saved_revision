@@ -1,0 +1,19 @@
+<div class="popup toolbar-popup ep_gitcommit-popup" id="gitcommitModal">
+  <div class="popup-content">
+    <% e.begin_block("gitcommitPopup"); %>
+
+        <div id="gitcommitWrite">
+            <p><h1>Saved revision message</h1></p>
+
+            <textarea id="gitcommitSrc" rows="10" cols="60" placeholder="Some message describing the changes"></textarea>
+            <div>
+                <input type="button" class="btn btn-primary gitcommitButton" id="dogitcommit" value="Insert ">
+                <input type="button" class="btn btn-default gitcommitButton" id="cancelgitcommit" value="Cancel">
+            </div>
+
+        </div>
+
+
+    <% e.end_block(); %>
+  </div>
+</div>

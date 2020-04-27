@@ -1,17 +1,15 @@
 {
   "parts": [
     {
-      "name": "set_title_on_pad",
+      "name": "ep_git_commit_saved_revisio",
       "client_hooks": {
-        "postAceInit": "ep_set_title_on_pad/static/js/index:documentReady",
-        "handleClientMessage_CUSTOM": "ep_set_title_on_pad/static/js/index"
+        "postAceInit": "ep_git_commit_saved_revision/static/js/index:documentReady",
+        "handleClientMessage_CUSTOM": "ep_git_commit_saved_revision/static/js/index"
       },
       "hooks": {
-        "eejsBlock_body":"ep_set_title_on_pad/eejs",
-        "eejsBlock_styles":"ep_set_title_on_pad/eejs",
-        "handleMessage": "ep_set_title_on_pad/handleMessage",
-        "exportFileName":"ep_set_title_on_pad/index",
-        "clientVars": "ep_set_title_on_pad/handleMessage"
+        "eejsBlock_body":"ep_git_commit_saved_revision/eejs",
+        "eejsBlock_styles":"ep_git_commit_saved_revision/eejs",
+        "handleMessage": "ep_git_commit_saved_revision/handleMessage"
       }
     }
   ]

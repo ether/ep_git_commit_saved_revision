@@ -6,7 +6,5 @@ exports.eejsBlock_styles = function(hook_name, args, cb){
 
 exports.eejsBlock_body = function (hook_name, args, cb)
 {
-  args.content = eejs.require('ep_set_title_on_pad/templates/title.ejs', {settings : false}) + args.content;
+  args.content = eejs.require('ep_git_commit_saved_revision/templates/modals.ejs', {settings : false}) + args.content;
 }
-
-

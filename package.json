@@ -1,9 +1,9 @@
 {
-  "name": "ep_set_title_on_pad",
-  "description": "Set the title on a pad in Etherpad, also includes real time updates to the UI",
+  "name": "ep_git_commit_saved_revision",
+  "description": "Set the gitcommit on a pad in Etherpad, also includes real time updates to the UI",
   "version": "0.2.0",
   "author": "johnyma22 (John McLear) <john@mclear.co.uk>",
   "dependencies": {},
   "engines": { "node": ">= 0.4.1" },
-  "repository" : { "type" : "git", "url"  : "https://github.com/JohnMcLear/ep_set_title_on_pad.git" }
+  "repository" : { "type" : "git", "url"  : "https://github.com/JohnMcLear/ep_git_commit_saved_revision.git" }
 }
