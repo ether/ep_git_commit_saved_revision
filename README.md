@@ -3,6 +3,7 @@
 Perform tasks when you hit saved revision.
 
 ## Example Settings.json for committing to git
+```
   /*
     Available variables to plugin are:
     * padId = The ID of the Pad you are working on IE "foo"
@@ -14,6 +15,7 @@ Perform tasks when you hit saved revision.
     "initCommand":"git init ${path}",
     "saveCommand":"git -C \"${path}\" add \"${padId}.txt\" && git -C \"${path}\" commit -m \"${message}\""
   }
+```
 
 ## Installation
 1. Install using http://%youretherpad%/admin/plugins or ``npm install ep_git_commit_saved_revision``
