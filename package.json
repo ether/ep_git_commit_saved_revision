@@ -1,7 +1,7 @@
 {
   "name": "ep_git_commit_saved_revision",
-  "description": "Set the gitcommit on a pad in Etherpad, also includes real time updates to the UI",
-  "version": "0.2.0",
+  "description": "Hooks on Saved Revision calls, designed to git commit a pad text when a user clicks Saved Revision Star",
+  "version": "0.0.1",
   "author": "johnyma22 (John McLear) <john@mclear.co.uk>",
   "dependencies": {},
   "engines": { "node": ">= 0.4.1" },
