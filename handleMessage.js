@@ -148,7 +148,7 @@ function doEvent(padId, message){
 
   // Write a text file to the path
   exports.getAndWrite = async function(){
-    var pad = await padManager.getPad("test");
+    var pad = await padManager.getPad(padId);
     let padText = exportTxt.getTXTFromAtext(pad, pad.atext);
 
     fs.writeFile(path+"/"+padId+".txt", padText, function (err) {
