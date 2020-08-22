@@ -1,7 +1,7 @@
 {
   "parts": [
     {
-      "name": "ep_git_commit_saved_revisio",
+      "name": "ep_git_commit_saved_revision",
       "client_hooks": {
         "postAceInit": "ep_git_commit_saved_revision/static/js/index:documentReady",
         "handleClientMessage_CUSTOM": "ep_git_commit_saved_revision/static/js/index"
