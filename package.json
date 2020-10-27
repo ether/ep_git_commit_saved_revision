@@ -10,5 +10,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/JohnMcLear/ep_git_commit_saved_revision.git"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "http://etherpad.org/"
   }
 }
