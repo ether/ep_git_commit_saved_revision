@@ -1,21 +1,21 @@
-/***
+/** *
 *
 * Responsible for negotiating messages between two clients
 *
 ****/
 
-const authorManager = require("../../src/node/db/AuthorManager"),
-         padManager = require("../../src/node/db/PadManager"),
-  padMessageHandler = require("../../src/node/handler/PadMessageHandler"),
-                 db = require('ep_etherpad-lite/node/db/DB').db,
-              async = require('../../src/node_modules/async');
-           settings = require('../../src/node/utils/Settings');
-                 fs = require('fs');
-          exportTxt = require("../../src/node/utils/ExportTxt");
+const authorManager = require('../../src/node/db/AuthorManager');
+const padManager = require('../../src/node/db/PadManager');
+const padMessageHandler = require('../../src/node/handler/PadMessageHandler');
+const db = require('ep_etherpad-lite/node/db/DB').db;
+const async = require('../../src/node_modules/async');
+settings = require('../../src/node/utils/Settings');
+fs = require('fs');
+exportTxt = require('../../src/node/utils/ExportTxt');
 
 
 settings = settings.ep_git_commit_saved_revision;
-if(!settings) return console.error("No ep_git_commit_saved_revision settings, see the README.md");
+if (!settings) return console.error('No ep_git_commit_saved_revision settings, see the README.md');
 
 // Doing initialization
 doInit();
@@ -24,15 +24,15 @@ doInit();
 /*
 * Handle incoming messages from clients
 */
-exports.handleMessage = async function(hook_name, context, callback){
+exports.handleMessage = async function (hook_name, context, callback) {
   // Firstly ignore any request that aren't about chat
-  var isgitcommitMessage = false;
-  if(context){
-    if(context.message && context.message){
-      if(context.message.type === 'COLLABROOM'){
-        if(context.message.data){
-          if(context.message.data.type){
-            if(context.message.data.type === 'gitcommit'){
+  let isgitcommitMessage = false;
+  if (context) {
+    if (context.message && context.message) {
+      if (context.message.type === 'COLLABROOM') {
+        if (context.message.data) {
+          if (context.message.data.type) {
+            if (context.message.data.type === 'gitcommit') {
               isgitcommitMessage = true;
             }
           }
@@ -41,13 +41,13 @@ exports.handleMessage = async function(hook_name, context, callback){
     }
   }
 
-  if(!isgitcommitMessage){
+  if (!isgitcommitMessage) {
     callback(false);
     return false;
   }
-  var message = context.message.data;
-  console.warn("message", message)
-  /***
+  const message = context.message.data;
+  console.warn('message', message);
+  /** *
     What's available in a message?
      * action -- The action IE chatPosition
      * padId -- The padId of the pad both authors are on
@@ -55,71 +55,71 @@ exports.handleMessage = async function(hook_name, context, callback){
      * message -- the actual message
      * myAuthorId -- The Id of the author who is trying to talk to the targetAuthorId
   ***/
-  if(message.action === 'sendgitcommitMessage'){
-    var authorName = await authorManager.getAuthorName(message.myAuthorId); // Get the authorname
-    var msg = {
-      type: "COLLABROOM",
+  if (message.action === 'sendgitcommitMessage') {
+    const authorName = await authorManager.getAuthorName(message.myAuthorId); // Get the authorname
+    const msg = {
+      type: 'COLLABROOM',
       data: {
-        type: "CUSTOM",
+        type: 'CUSTOM',
         payload: {
-          action: "recievegitcommitMessage",
+          action: 'recievegitcommitMessage',
           authorId: message.myAuthorId,
-          authorName: authorName,
+          authorName,
           padId: message.padId,
-          message: message.message
-        }
-      }
+          message: message.message,
+        },
+      },
     };
     saveRoomgitcommit(message.padId, message.message);
   }
 
-  if(isgitcommitMessage === true){
+  if (isgitcommitMessage === true) {
     callback([null]);
-  }else{
+  } else {
     callback(true);
   }
-}
+};
 
-function saveRoomgitcommit(padId, message){
+function saveRoomgitcommit(padId, message) {
   // do the git logic here
   // saving to database just for posterity..
-  db.set("gitcommit:"+padId, message);
+  db.set(`gitcommit:${padId}`, message);
 
   // handle the actual event
-  doEvent(padId, message)
+  doEvent(padId, message);
 }
 
-function sendToRoom(message, msg){
-  var bufferAllows = true; // Todo write some buffer handling for protection and to stop DDoS -- myAuthorId exists in message.
-  if(bufferAllows){
-    setTimeout(function(){ // This is bad..  We have to do it because ACE hasn't redrawn by the time the chat has arrived
-      padMessageHandler.handleCustomObjectMessage(msg, false, function(){
+function sendToRoom(message, msg) {
+  const bufferAllows = true; // Todo write some buffer handling for protection and to stop DDoS -- myAuthorId exists in message.
+  if (bufferAllows) {
+    setTimeout(() => { // This is bad..  We have to do it because ACE hasn't redrawn by the time the chat has arrived
+      padMessageHandler.handleCustomObjectMessage(msg, false, () => {
         // TODO: Error handling.
-      })
+      });
     }
     , 100);
   }
 }
 
-function doInit(){
-  var path = settings.path; // Path IE "/home/etherpad/var/git"
-  var initCommandStr = settings.initCommand; // IE "git init \"${REPO_PATH}\"
-  var initCommand = eval('`'+initCommandStr+'`');
+function doInit() {
+  const path = settings.path; // Path IE "/home/etherpad/var/git"
+  const initCommandStr = settings.initCommand; // IE "git init \"${REPO_PATH}\"
+  const initCommand = eval(`\`${initCommandStr}\``);
 
-  console.debug("initCommand", initCommand)
+  console.debug('initCommand', initCommand);
 
   // make path if it doesn't exists
-  var fs = require('fs');
-  var dir = path;
+  const fs = require('fs');
+  const dir = path;
 
-  if (!fs.existsSync(dir)){
-      fs.mkdirSync(dir);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
   }
 
   // execute a command in that folder
-  const { exec } = require("child_process");
+  const {exec} = require('child_process');
 
-  exec(initCommand, {cwd: path}, function(error, stdout, stderr){
+  exec(initCommand, {cwd: path}, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -132,35 +132,35 @@ function doInit(){
   });
 }
 
-function doEvent(padId, message){
+function doEvent(padId, message) {
   var saveCommand = settings.saveCommand; // IE "git -C \"${REPO_PATH} add <PADNAME.txt> && git -C \"${REPO_PATH}\" commit -m \"${COMMIT_MESSAGE}\""
-  var path = settings.path; // Path IE "/home/etherpad/var/git"
-  var saveCommandStr = settings.saveCommand; // IE "git init \"${REPO_PATH}\"
-  var saveCommand = eval('`'+saveCommandStr+'`');
+  const path = settings.path; // Path IE "/home/etherpad/var/git"
+  const saveCommandStr = settings.saveCommand; // IE "git init \"${REPO_PATH}\"
+  var saveCommand = eval(`\`${saveCommandStr}\``);
 
   // make path if it doesn't exists
-  var fs = require('fs');
-  var dir = path;
+  const fs = require('fs');
+  const dir = path;
 
-  if (!fs.existsSync(dir)){
-      fs.mkdirSync(dir);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
   }
 
   // Write a text file to the path
-  exports.getAndWrite = async function(){
-    var pad = await padManager.getPad(padId);
-    let padText = exportTxt.getTXTFromAtext(pad, pad.atext);
+  exports.getAndWrite = async function () {
+    const pad = await padManager.getPad(padId);
+    const padText = exportTxt.getTXTFromAtext(pad, pad.atext);
 
-    fs.writeFile(path+"/"+padId+".txt", padText, function (err) {
+    fs.writeFile(`${path}/${padId}.txt`, padText, (err) => {
       if (err) return console.log(err);
     });
     // execute a command in that folder
-    const { exec } = require("child_process");
+    const {exec} = require('child_process');
 
-    exec(saveCommand, {cwd: path}, function(error, stdout, stderr){
-      if(!error) tellRoom(padId, true);
+    exec(saveCommand, {cwd: path}, (error, stdout, stderr) => {
+      if (!error) tellRoom(padId, true);
       if (error) {
-        tellRoom(padId, false)
+        tellRoom(padId, false);
         console.log(`error: ${error.message}`);
         return;
       }
@@ -169,26 +169,24 @@ function doEvent(padId, message){
         return;
       }
     });
-
-  }
+  };
   exports.getAndWrite();
-
 }
 
-function tellRoom(padId, value){
+function tellRoom(padId, value) {
   // Tells people present on the pad that a git commit was made for this docucment.
-  var msg = {
-    type: "COLLABROOM",
+  const msg = {
+    type: 'COLLABROOM',
     data: {
-      type: "CUSTOM",
+      type: 'CUSTOM',
       payload: {
-        action: "recievegitcommitMessage",
-        padId: padId,
-        message: value
-      }
-    }
-  }
-  padMessageHandler.handleCustomObjectMessage(msg, false, function(){
+        action: 'recievegitcommitMessage',
+        padId,
+        message: value,
+      },
+    },
+  };
+  padMessageHandler.handleCustomObjectMessage(msg, false, () => {
     // TODO: Something?
-  })
+  });
 }
