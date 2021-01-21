@@ -5,7 +5,7 @@
   "author": "johnyma22 (John McLear) <john@mclear.co.uk>",
   "dependencies": {},
   "engines": {
-    "node": ">= 0.4.1"
+    "node": ">= 10.13.0"
   },
   "repository": {
     "type": "git",

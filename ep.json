@@ -8,7 +8,6 @@
       },
       "hooks": {
         "eejsBlock_body":"ep_git_commit_saved_revision/eejs",
-        "eejsBlock_styles":"ep_git_commit_saved_revision/eejs",
         "handleMessage": "ep_git_commit_saved_revision/handleMessage"
       }
     }
