@@ -8,12 +8,7 @@ const exportTxt = require('ep_etherpad-lite/node/utils/ExportTxt');
 const settings = settingsStr.ep_git_commit_saved_revision;
 if (!settings) return console.error('No ep_git_commit_saved_revision settings, see the README.md');
 
-// Doing initialization
-doInit();
 
-/*
-* Handle incoming messages from clients
-*/
 exports.handleMessage = (hook_name, context, callback) => {
   // Firstly ignore any request that aren't about chat
   let isgitcommitMessage = false;
@@ -144,3 +139,6 @@ const tellRoom = (padId, value) => {
     // TODO: Something?
   });
 };
+
+// Doing initialization
+doInit();
