@@ -3,8 +3,9 @@
   "description": "Hooks on Saved Revision calls, designed to git commit a pad text when a user clicks Saved Revision Star",
   "version": "0.0.11",
   "author": "johnyma22 (John McLear) <john@mclear.co.uk>",
+  "dependencies": {},
   "engines": {
-    "node": ">= 11.17.0"
+    "node": ">= 0.4.1"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,10 @@
   "eslintConfig": {
     "root": true,
     "extends": "etherpad/plugin"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "peerDependencies": {
     "ep_etherpad-lite": ">=1.8.6"

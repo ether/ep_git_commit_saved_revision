@@ -1,7 +1,5 @@
-'use strict';
-
-exports.handleClientMessage_CUSTOM = (hook, context, cb) => {
-  if (context.payload.action === 'recievegitcommitMessage') {
+exports.handleClientMessage_CUSTOM = function (hook, context, cb) {
+  if (context.payload.action == 'recievegitcommitMessage') {
     const message = context.payload.message;
     if (message === true) {
       $.gritter.add({
@@ -18,32 +16,16 @@ exports.handleClientMessage_CUSTOM = (hook, context, cb) => {
   }
 };
 
-const sendgitcommit = () => {
-  const myAuthorId = pad.getUserId();
-  const padId = pad.getPadId();
-  const srcMessage = $('#gitcommitSrc').val();
-  // Send chat message to send to the server
-  const message = {
-    type: 'gitcommit',
-    action: 'sendgitcommitMessage',
-    message: srcMessage,
-    padId,
-    myAuthorId,
-  };
-  pad.collabClient.sendMessage(message); // Send the chat position message to the server
-};
-
-exports.documentReady = () => {
+exports.documentReady = function () {
   $('body').on('click', '.buttonicon-savedRevision', () => {
     $('#gitcommitModal').addClass('popup-show');
     $('#input_gitcommit').focus();
-  });
-  // fine for click but can't say Cntrl S to save revision?
+  }); // fine for click but can't say Cntrl S to save revision?
 
   if (!$('#editorcontainerbox').hasClass('flex-layout')) {
     $.gritter.add({
       title: 'Error',
-      text: 'ep_git_commit_saved_revision: Upgrade to etherpad 1.8',
+      text: 'ep_git_commit_saved_revision: Please upgrade to etherpad 1.8 for this plugin to work correctly',
       sticky: true,
       class_name: 'error',
     });
@@ -54,3 +36,18 @@ exports.documentReady = () => {
     sendgitcommit();
   });
 };
+
+function sendgitcommit() {
+  const myAuthorId = pad.getUserId();
+  const padId = pad.getPadId();
+  var message = $('#gitcommitSrc').val();
+  // Send chat message to send to the server
+  var message = {
+    type: 'gitcommit',
+    action: 'sendgitcommitMessage',
+    message,
+    padId,
+    myAuthorId,
+  };
+  pad.collabClient.sendMessage(message); // Send the chat position message to the server
+}
