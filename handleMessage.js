@@ -1,11 +1,5 @@
 'use strict';
 
-/** *
-*
-* Responsible for negotiating messages between two clients
-*
-****/
-
 const padManager = require('ep_etherpad-lite/node/db/PadManager');
 const padMessageHandler = require('ep_etherpad-lite/node/handler/PadMessageHandler');
 const db = require('ep_etherpad-lite/node/db/DB').db;
@@ -87,7 +81,7 @@ const saveRoomgitcommit = (padId, message) => {
 /*
 * Handle incoming messages from clients
 */
-exports.handleMessage = async (hookName, context, callback) => {
+exports.handleMessage = (hookName, context, callback) => {
   // Firstly ignore any request that aren't about chat
   let isgitcommitMessage = false;
 
@@ -102,27 +96,21 @@ exports.handleMessage = async (hookName, context, callback) => {
   }
 
   if (!isgitcommitMessage) {
-    callback(false);
-    return false;
-  }
-  const message = context.message.data;
-  console.warn('message', message);
-
-  /** *
-    What's available in a message?
-     * action -- The action IE chatPosition
-     * padId -- The padId of the pad both authors are on
-     * targetAuthorId -- The Id of the author this user wants to talk to
-     * message -- the actual message
-     * myAuthorId -- The Id of the author who is trying to talk to the targetAuthorId
-  ***/
-  if (message.action === 'sendgitcommitMessage') {
-    saveRoomgitcommit(message.padId, message.message);
-  }
-
-  if (isgitcommitMessage === true) {
     callback([null]);
   } else {
+    const message = context.message.data;
+
+    /** *
+    What's available in a message?
+    * action -- The action IE chatPosition
+    * padId -- The padId of the pad both authors are on
+    * targetAuthorId -- The Id of the author this user wants to talk to
+    * message -- the actual message
+    * myAuthorId -- The Id of the author who is trying to talk to the targetAuthorId
+    ***/
+    if (message.action === 'sendgitcommitMessage') {
+      saveRoomgitcommit(message.padId, message.message);
+    }
     callback(true);
   }
 };
@@ -148,11 +136,9 @@ const doInit = () => {
   exec(initCommand, {cwd: path}, (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
-      return;
     }
     if (stderr) {
       console.log(`stderr: ${stderr}`);
-      return;
     }
     console.log(`stdout: ${stdout}`);
   });
