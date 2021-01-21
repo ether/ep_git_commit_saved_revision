@@ -1,5 +1,7 @@
-exports.handleClientMessage_CUSTOM = function (hook, context, cb) {
-  if (context.payload.action == 'recievegitcommitMessage') {
+'use strict';
+
+exports.handleClientMessage_CUSTOM = (hook, context, cb) => {
+  if (context.payload.action === 'recievegitcommitMessage') {
     const message = context.payload.message;
     if (message === true) {
       $.gritter.add({
@@ -16,7 +18,7 @@ exports.handleClientMessage_CUSTOM = function (hook, context, cb) {
   }
 };
 
-exports.documentReady = function () {
+exports.documentReady = () => {
   $('body').on('click', '.buttonicon-savedRevision', () => {
     $('#gitcommitModal').addClass('popup-show');
     $('#input_gitcommit').focus();
@@ -25,7 +27,7 @@ exports.documentReady = function () {
   if (!$('#editorcontainerbox').hasClass('flex-layout')) {
     $.gritter.add({
       title: 'Error',
-      text: 'ep_git_commit_saved_revision: Please upgrade to etherpad 1.8 for this plugin to work correctly',
+      text: 'ep_git_commit_saved_revision: Upgrade to etherpad 1.8.*',
       sticky: true,
       class_name: 'error',
     });
@@ -37,17 +39,17 @@ exports.documentReady = function () {
   });
 };
 
-function sendgitcommit() {
+const sendgitcommit = () => {
   const myAuthorId = pad.getUserId();
   const padId = pad.getPadId();
-  var message = $('#gitcommitSrc').val();
+  const message = $('#gitcommitSrc').val();
   // Send chat message to send to the server
-  var message = {
+  const msg = {
     type: 'gitcommit',
     action: 'sendgitcommitMessage',
     message,
     padId,
     myAuthorId,
   };
-  pad.collabClient.sendMessage(message); // Send the chat position message to the server
-}
+  pad.collabClient.sendMessage(msg); // Send the chat position message to the server
+};

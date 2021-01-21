@@ -101,7 +101,7 @@ const doEvent = (padId, message) => {
   }
 
   // Write a text file to the path
-  exports.getAndWrite = async function () {
+  exports.getAndWrite = async () => {
     const pad = await padManager.getPad(padId);
     const padText = exportTxt.getTXTFromAtext(pad, pad.atext);
 
@@ -125,9 +125,9 @@ const doEvent = (padId, message) => {
     });
   };
   exports.getAndWrite();
-}
+};
 
-function tellRoom(padId, value) {
+const tellRoom = (padId, value) => {
   // Tells people present on the pad that a git commit was made for this docucment.
   const msg = {
     type: 'COLLABROOM',
@@ -143,4 +143,4 @@ function tellRoom(padId, value) {
   padMessageHandler.handleCustomObjectMessage(msg, false, () => {
     // TODO: Something?
   });
-}
+};
