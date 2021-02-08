@@ -1,7 +1,7 @@
 {
   "name": "ep_git_commit_saved_revision",
   "description": "Hooks on Saved Revision calls, designed to git commit a pad text when a user clicks Saved Revision Star",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "author": "johnyma22 (John McLear) <john@mclear.co.uk>",
   "dependencies": {},
   "engines": {
