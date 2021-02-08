@@ -1,3 +1,5 @@
+![Publish Status](https://github.com/ether/ep_git_commit_saved_revision/workflows/Node.js%20Package/badge.svg) ![Backend Tests Status](https://github.com/ether/ep_git_commit_saved_revision/workflows/Backend%20tests/badge.svg)
+
 # Saved Revision Hooks
 
 Perform tasks when you hit saved revision.
