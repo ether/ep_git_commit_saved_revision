@@ -20,7 +20,7 @@ Perform tasks when you hit saved revision.
 ```
 
 ## Installation
-1. Install using http://%youretherpad%/admin/plugins or ``npm install ep_git_commit_saved_revision``
+1. Install using http://%youretherpad%/admin/plugins or ``pnpm run plugins install ep_git_commit_saved_revision``
 1. Copy / paste above settings example into the bottom of settings.json
 
 ## TODO
