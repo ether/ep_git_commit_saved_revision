@@ -2,7 +2,7 @@
 
 const padManager = require('ep_etherpad-lite/node/db/PadManager');
 const padMessageHandler = require('ep_etherpad-lite/node/handler/PadMessageHandler');
-const db = require('ep_etherpad-lite/node/db/DB').db;
+const db = require('ep_etherpad-lite/node/db/DB');
 const settingsStr = require('ep_etherpad-lite/node/utils/Settings');
 const exportTxt = require('ep_etherpad-lite/node/utils/ExportTxt');
 const settings = settingsStr.ep_git_commit_saved_revision;
@@ -41,8 +41,12 @@ exports.handleMessage = (hook_name, context, callback) => {
 
 const saveRoomgitcommit = (padId, message) => {
   // do the git logic here
-  // saving to database just for posterity..
-  db.set(`gitcommit:${padId}`, message);
+  // saving to database just for posterity.. ueberdb2 v6 is promise-only,
+  // so awaiting (or .catch'ing) surfaces failures instead of producing an
+  // unhandled rejection.
+  db.set(`gitcommit:${padId}`, message).catch((err) => {
+    console.error('ep_git_commit_saved_revision db.set failed:', err);
+  });
 
   // handle the actual event
   doEvent(padId, message);
