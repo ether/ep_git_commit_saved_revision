@@ -15,7 +15,7 @@
     "url": "https://etherpad.org/"
   },
   "devDependencies": {
-    "eslint": "^10.9.0",
+    "eslint": "^10.9.1",
     "eslint-config-etherpad": "^4.0.5",
     "typescript": "^7.0.2"
   },
